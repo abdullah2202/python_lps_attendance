@@ -36,9 +36,11 @@ for index, row in dt2.iterrows():
         total.append([row['Student Number'],row['Sessions missed'],row['Firstname'], row['Surname'], row['Form']])
 
 w_df = pd.DataFrame(total)
+w_df.columns = ['Student Number', 'Sessions Missed', 'Firstname', 'Surname', 'Form']
+w_df = w_df.sort_values(by="Sessions Missed", ascending=False)
+
+# print(w_df)
+
 writer = pd.ExcelWriter('total.xlsx', engine='xlsxwriter')
 w_df.to_excel(writer, sheet_name='Total', index=False)
 writer.save()
-
-print(total)
-    
