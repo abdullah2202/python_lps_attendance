@@ -23,7 +23,6 @@ This python application will calculate attendance from multiple Excel sheets and
 ## Notes
 
 1. The headers are hard coded and can be modified in the `read.py` file.
-2. 
 
 ## Where to get it
 
