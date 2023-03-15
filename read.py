@@ -1,6 +1,5 @@
 import pandas as pd
 
-
 from utils import arrays, files
 
 filenames = files.get_filenames()

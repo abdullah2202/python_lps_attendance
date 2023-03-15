@@ -5,3 +5,14 @@
 .venv
 .venv/
 
+__pycache__/
+*.py[cod]
+.$py.class
+.Python
+build/
+MANIFEST
+.pytest_cache/
+.cache
+
+# VSCode
+.vscode/
