@@ -4,11 +4,11 @@ from utils import arrays, files
 
 filenames = files.get_filenames()
 total = []
+weeks = 0
 
 for filename in filenames:
     df = pd.read_excel(filename)
     df.reset_index()
-    print(filename)
     for index, row in df.iterrows():
         if(arrays.is_in_previous(total, row['Student Number'])):
             index = arrays.get_index(total, row['Student Number'])
