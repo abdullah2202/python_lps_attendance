@@ -85,4 +85,6 @@ w_df = w_df.sort_values(by="Total Sessions Missed", ascending=False)
 
 writer = pd.ExcelWriter('total.xlsx', engine='xlsxwriter')
 w_df.to_excel(writer, sheet_name='Total', index=False)
-writer.save()
+writer.close()
+
+print('\n\n Combined Excel file created successfully! \n\n')
