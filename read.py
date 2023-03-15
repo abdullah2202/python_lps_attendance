@@ -11,12 +11,20 @@ columns = ['Student Number',
            'Surname', 
            'Form',
            'Total Sessions Missed', 
-           'Total Attendance %'
+           'Total Attendance %',
           ]
 
 for filename in filenames:
     # Increment week number
     weeks += 1
+    txt_weeks = f'W{weeks}'
+
+    # Calculate the index of new columns
+    index_sessions_missed = 6 + ((weeks * 2) -1)
+    index_reasons = 6 + (weeks * 2)
+
+    # Add Weekly Column Names
+    columns.extend([txt_weeks, f'{txt_weeks} Reason'])
 
     # Read Excel file
     df = pd.read_excel(filename)
@@ -35,7 +43,14 @@ for filename in filenames:
             # Sum up the Total Attendance %
             total[index][5] = (row['Attendance %'] + total[index][5]) / 2
 
-            # TODO: Add the attendance notes
+            # Add in empty columns for previous weeks
+            if(len(total[index])<(index_reasons-2)):
+                while(len(total[index])<(index_reasons-2)):
+                    total[index].extend(['',''])
+
+            # Add Weekly totals and notes to end
+            total[index].extend([row['Sessions missed'], row['Attendance Notes']])
+
 
         # Student numner does not exist, create new entry
         else:
@@ -46,13 +61,27 @@ for filename in filenames:
                           row['Sessions missed'],
                           row['Attendance %'],
                         ])
+            
+            last_index = len(total) - 1
+
+            # First Week
+            if(weeks==1):
+                total[last_index].extend([
+                    row['Sessions missed'],
+                    row['Attendance Notes']
+                ])
+            else:
+                while(len(total[last_index])<(index_reasons)-2):
+                    total[last_index].extend(['',''])
+                total[last_index].extend([
+                    row['Sessions missed'],
+                    row['Attendance Notes']
+                ])
 
 # Write data to Excel file
 w_df = pd.DataFrame(total)
 w_df.columns = columns
 w_df = w_df.sort_values(by="Total Sessions Missed", ascending=False)
-
-# print(w_df)
 
 writer = pd.ExcelWriter('total.xlsx', engine='xlsxwriter')
 w_df.to_excel(writer, sheet_name='Total', index=False)
